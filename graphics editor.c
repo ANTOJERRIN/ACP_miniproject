@@ -665,6 +665,7 @@ void runNcursesMode(void) {
         mvprintw(menuY + 4, menuX, "4. List Objects");
         mvprintw(menuY + 5, menuX, "5. Exit");
         mvprintw(menuY + 6, menuX, "=================");
+        refresh();
 
         int choice = getNcursesInteger("Enter choice (1-5): ", 1, 5, menuY + 8, menuX);
         if (choice == 5) {
@@ -677,6 +678,7 @@ void runNcursesMode(void) {
                     move(menuY + 8, menuX);
                     clrtoeol();
                     printw("Error: Max object limit reached. Press any key...");
+                    refresh();
                     getch();
                     break;
                 }
@@ -687,6 +689,7 @@ void runNcursesMode(void) {
                 mvprintw(4, 2, "3. Circle");
                 mvprintw(5, 2, "4. Triangle");
                 mvprintw(6, 2, "5. Cancel");
+                refresh();
 
                 int typeChoice = getNcursesInteger("Enter choice (1-5): ", 1, 5, 8, 2);
                 if (typeChoice == 5) {
@@ -698,6 +701,7 @@ void runNcursesMode(void) {
 
                 clear();
                 mvprintw(0, 2, "=== Enter Shape Details ===");
+                refresh();
                 if (typeChoice == 1) { // Line
                     newObj.data.line.x1 = getNcursesInteger("Start X (-100 to 100): ", -100, 100, 2, 2);
                     newObj.data.line.y1 = getNcursesInteger("Start Y (-100 to 100): ", -100, 100, 4, 2);
@@ -731,18 +735,21 @@ void runNcursesMode(void) {
                     move(menuY + 8, menuX);
                     clrtoeol();
                     printw("No objects to delete. Press any key...");
+                    refresh();
                     getch();
                     break;
                 }
                 clear();
                 mvprintw(0, 2, "=== Active Objects ===");
                 listObjectsNcurses(objects, objectCount, 2, 2);
+                refresh();
                 int listHeight = objectCount + 4;
                 int idToDelete = getNcursesInteger("Enter ID to delete: ", 1, nextObjectId, listHeight + 2, 2);
                 if (deleteObject(objects, &objectCount, idToDelete)) {
                     redrawCanvas(canvas, objects, objectCount);
                 } else {
                     mvprintw(listHeight + 4, 2, "Error: Object ID not found. Press any key...");
+                    refresh();
                     getch();
                 }
                 break;
@@ -752,12 +759,14 @@ void runNcursesMode(void) {
                     move(menuY + 8, menuX);
                     clrtoeol();
                     printw("No objects to modify. Press any key...");
+                    refresh();
                     getch();
                     break;
                 }
                 clear();
                 mvprintw(0, 2, "=== Active Objects ===");
                 listObjectsNcurses(objects, objectCount, 2, 2);
+                refresh();
                 int listHeight = objectCount + 4;
                 int idToModify = getNcursesInteger("Enter ID to modify: ", 1, nextObjectId, listHeight + 2, 2);
                 
@@ -770,6 +779,7 @@ void runNcursesMode(void) {
                 }
                 if (foundIndex == -1) {
                     mvprintw(listHeight + 4, 2, "Error: Object ID not found. Press any key...");
+                    refresh();
                     getch();
                     break;
                 }
@@ -779,6 +789,7 @@ void runNcursesMode(void) {
 
                 clear();
                 mvprintw(0, 2, "=== Enter New Shape Details ===");
+                refresh();
                 if (modifiedObj.type == LINE) {
                     modifiedObj.data.line.x1 = getNcursesInteger("New Start X (-100 to 100): ", -100, 100, 2, 2);
                     modifiedObj.data.line.y1 = getNcursesInteger("New Start Y (-100 to 100): ", -100, 100, 4, 2);
@@ -813,6 +824,7 @@ void runNcursesMode(void) {
                 listObjectsNcurses(objects, objectCount, 2, 2);
                 int listHeight = objectCount + 4;
                 mvprintw(listHeight + 2, 2, "Press any key to return to Main Menu...");
+                refresh();
                 getch();
                 break;
             }
@@ -923,7 +935,7 @@ int getNcursesInteger(const char *prompt, int minVal, int maxVal, int promptY, i
         
         // Turn on terminal echo for visual typing
         echo();
-        getstr(inputBuf);
+        getnstr(inputBuf, sizeof(inputBuf) - 1);
         noecho();
 
         // Clear carriage return and newline characters
@@ -933,6 +945,7 @@ int getNcursesInteger(const char *prompt, int minVal, int maxVal, int promptY, i
             move(promptY + 1, promptX);
             clrtoeol();
             printw("Error: Input cannot be empty. Press any key...");
+            refresh();
             getch();
             move(promptY + 1, promptX);
             clrtoeol();
@@ -950,6 +963,7 @@ int getNcursesInteger(const char *prompt, int minVal, int maxVal, int promptY, i
                 move(promptY + 1, promptX);
                 clrtoeol();
                 printw("Error: Out of range (%d to %d). Press any key...", minVal, maxVal);
+                refresh();
                 getch();
                 move(promptY + 1, promptX);
                 clrtoeol();
@@ -958,6 +972,7 @@ int getNcursesInteger(const char *prompt, int minVal, int maxVal, int promptY, i
             move(promptY + 1, promptX);
             clrtoeol();
             printw("Error: Invalid numeric input. Press any key...");
+            refresh();
             getch();
             move(promptY + 1, promptX);
             clrtoeol();
