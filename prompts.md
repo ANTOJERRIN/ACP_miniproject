@@ -26,16 +26,16 @@ Please keep the code beginner-friendly because I need to understand and explain 
 ---
 
 ### Prompt 2
-I already saw a basic version from my classmate, but I want to make my own improved version.
-The first version directly erased shapes from the canvas, but I think that can cause problems if objects overlap. So I want to use an array of structures to store all objects, and whenever something is deleted or modified, I want to clear the canvas and redraw only active objects.
-Please build this in C using one file only: graphics_editor.c.
-Use:
+After testing my initial code from Prompt 1, I noticed a problem. When I delete a shape, the '*' characters for that shape get removed, but if two shapes were overlapping, part of the other shape also disappears. This breaks the display.
+I think the fix is to store all objects in an array of structures, and whenever I delete or modify any object, I should clear the entire canvas and redraw only the remaining active objects. That way overlapping shapes won't cause issues.
+Can you rebuild the code with this approach? Keep it in one file: graphics_editor.c.
+Use these constants:
 #define WIDTH 60
 #define HEIGHT 20
 #define MAX_OBJECTS 100
 #define EMPTY '_'
 #define DRAW '*'
-Please include functions like:
+I want these functions in the program:
 initCanvas
 displayCanvas
 setPixel
@@ -48,7 +48,7 @@ addObject
 deleteObject
 modifyObject
 listObjects
-Also add comments in the code so I can understand what each part does.
+Also please add comments throughout the code so I can follow what each section does.
 
 ---
 
